@@ -1,0 +1,16 @@
+Aug 12, 2024 4:27:33 PM Main main
+SEVERE: An error occurred: /Users/gerazo/Desktop/test
+Aug 12, 2024 4:28:32 PM FileManager createFile
+INFO: File created: /Users/gerazo/Desktop/test/demo.txt
+Aug 12, 2024 4:29:18 PM FileManager createFile
+INFO: File created: /Users/gerazo/Desktop/test/example.txt
+Aug 12, 2024 4:29:47 PM FileManager deleteFile
+INFO: File deleted: /Users/gerazo/Desktop/test/demo.txt
+Aug 12, 2024 4:30:22 PM FileManager createDirectory
+INFO: Directory created: /Users/gerazo/Desktop/test/test2
+Aug 12, 2024 4:33:25 PM FileManager moveFile
+INFO: File moved from /Users/gerazo/Desktop/test/example.txt to /Users/gerazo/Desktop/test/test2
+Aug 12, 2024 4:34:13 PM Main main
+SEVERE: An error occurred: /Users/gerazo/Desktop/test/test2
+Aug 12, 2024 4:35:12 PM FileManager createFile
+INFO: File created: /Users/gerazo/Desktop/test/newDirectory
