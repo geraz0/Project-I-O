@@ -72,11 +72,13 @@ public class FileManager {
     }
 
     private void listDirectoryContents(Path dirPath) throws IOException {
-        try (Stream<Path> stream = Files.walk(dirPath, 1)) {
+        try (Stream<Path> stream = Files.walk(dirPath, 1)) { // Walking only 1 level deep to avoid recursion
             stream.forEach(filePath -> {
                 try {
                     BasicFileAttributes attrs = Files.readAttributes(filePath, BasicFileAttributes.class);
-                    System.out.println("File: " + filePath + " Size: " + attrs.size() + " Last Modified: " + attrs.lastModifiedTime());
+                    System.out.println("File: " + filePath +
+                            " | Size: " + attrs.size() + " bytes" +
+                            " | Last Modified: " + attrs.lastModifiedTime());
                 } catch (IOException e) {
                     System.out.println("Error reading file attributes: " + e.getMessage());
                 }
@@ -85,11 +87,38 @@ public class FileManager {
     }
 
     private void copyFile(Path source, Path destination) throws IOException {
+        // Check if destination is a directory, and resolve the destination path to include the source file's name if it is.
+        if (Files.isDirectory(destination)) {
+            destination = destination.resolve(source.getFileName());
+        }
+
+        // Execute the copy operation ensuring no inadvertent file replacement occurs unless explicitly intended.
         Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("File copied from " + source + " to " + destination);
     }
 
-    private void moveFile(Path source, Path destination) throws IOException {
-        Files.move(source, destination, StandardCopyOption.REPLACE_EXISTING);
+
+    public void moveFile(Path source, Path destinationDir) throws IOException {
+        if (!Files.isDirectory(destinationDir)) {
+            System.out.println("Destination is not a directory");
+            return;
+        }
+
+        // Ensure the directory exists or create it
+        if (!Files.exists(destinationDir)) {
+            Files.createDirectories(destinationDir);
+        }
+
+        // Construct the final destination path by appending the source file's name to the destination directory
+        Path destination = destinationDir.resolve(source.getFileName());
+
+        // Perform the move
+        try {
+            Files.move(source, destination, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("File moved successfully from " + source + " to " + destination);
+        } catch (IOException e) {
+            System.out.println("Failed to move the file: " + e.getMessage());
+        }
     }
 
     private void deleteFile(Path path) throws IOException {
